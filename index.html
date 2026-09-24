@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b5cff">
+<title>POD BV – Lossing Loods</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#182230;background:#f4f6f9}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:760px;margin:auto;padding:16px 14px 42px}
+header{background:#0b5cff;color:#fff;border-radius:18px;padding:20px;margin-bottom:14px}
+h1{font-size:23px;margin:0 0 4px}header p{margin:0;opacity:.9}
+.card{background:#fff;border-radius:16px;padding:17px;margin:12px 0;box-shadow:0 2px 12px #0000000b}
+h2{font-size:17px;margin:0 0 14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-weight:650;font-size:14px;margin-bottom:6px}
+input,select,textarea{width:100%;font:inherit;border:1px solid #ccd3dd;border-radius:10px;padding:12px;background:#fff}
+textarea{min-height:100px;resize:vertical}.full{grid-column:1/-1}
+.choice{display:flex;gap:10px;flex-wrap:wrap}.choice label{font-weight:500;border:1px solid #ccd3dd;border-radius:10px;padding:10px 12px;background:#fafbfc}
+.choice input{width:auto}
+.photo{border:1px dashed #aeb8c5;border-radius:12px;padding:12px;margin:9px 0;background:#fafbfc}
+.photo strong{display:block;margin-bottom:8px}.photo small{display:block;color:#687386;margin-top:6px}
+.preview{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.preview img{width:76px;height:76px;object-fit:cover;border-radius:8px}
+button{width:100%;border:0;border-radius:12px;padding:15px;font:700 16px inherit;background:#0b5cff;color:#fff}
+button.secondary{background:#eef3ff;color:#0b5cff;margin-top:9px}button.save{background:#157347;margin-top:9px}.draftbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}.draftbar button{width:auto;flex:1;min-width:150px}.draftinfo{font-size:13px;color:#667085;margin-top:8px}.required{color:#d11}
+.note{font-size:13px;color:#667085}.hidden{display:none}
+#status{margin-top:12px;padding:12px;border-radius:10px;display:none}.ok{background:#e9f8ef;color:#126b37}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>POD BV – Lossing Loods</h1><p>Vul in, sla tussendoor op en ga via de opgeslagen link verder op een ander apparaat.</p></header>
+<form id="form">
+<section class="card"><h2>Order & datum</h2><div class="grid">
+<div><label>Ordernummer <span class="required">*</span></label><input name="order" id="order" required></div>
+<div><label>Datum <span class="required">*</span></label><input type="date" name="date" id="date" required></div>
+</div></section>
+
+<section class="card"><h2>1. Containergegevens</h2><div class="grid">
+<div><label>Containernummer <span class="required">*</span></label><input name="container" id="container" required></div>
+<div><label>Sealnummer <span class="required">*</span></label><input name="seal" required></div>
+<div class="full"><label>Goederen <span class="required">*</span></label><div class="choice">
+<label><input type="radio" name="goods" value="Vrije goederen" required> Vrije goederen</label>
+<label><input type="radio" name="goods" value="T1-goederen"> T1-goederen – openen na toestemming</label></div></div>
+<div class="full"><label>Gasmeting vereist? <span class="required">*</span></label><div class="choice">
+<label><input type="radio" name="gas" value="Nee" required> Nee</label>
+<label><input type="radio" name="gas" value="Ja"> Ja – openen na toestemming</label></div></div>
+<div><label>Aantal colli <span class="required">*</span></label><input name="colli" type="number" min="0" required></div>
+<div><label>Totaal gewicht (kg) <span class="required">*</span></label><input name="weight" type="number" min="0" step="0.01" required></div>
+</div></section>
+
+<section class="card"><h2>2. Klant & referenties</h2><div class="grid">
+<div class="full"><label>Klantnaam <span class="required">*</span></label><input name="customer" required></div>
+<div><label>Klantreferentie</label><input name="reference"></div>
+<div><label>Bestemming</label><input name="destination"></div>
+</div></section>
+
+<section class="card"><h2>3. Foto's bij lossing</h2>
+<p class="note">Foto's zijn <strong>niet verplicht</strong>. Maak ze wanneer relevant.</p>
+<div class="photo"><strong>Container buitenzijde</strong><input type="file" name="photo_container" accept="image/*" capture="environment"><div class="preview"></div></div>
+<div class="photo"><strong>Seal vóór opening</strong><input type="file" name="photo_seal" accept="image/*" capture="environment"><div class="preview"></div></div>
+<div class="photo"><strong>Inhoud vóór lossen</strong><input type="file" name="photo_before" accept="image/*" capture="environment"><div class="preview"></div></div>
+<div class="photo"><strong>Goederen tijdens lossing</strong><input type="file" name="photo_during" accept="image/*" capture="environment"><div class="preview"></div></div>
+<div class="photo"><strong>Schade / afwijking</strong><input type="file" name="photo_damage" accept="image/*" capture="environment"><div class="preview"></div></div>
+<div class="photo"><strong>Geloste pallets / goederen</strong><input type="file" name="photo_after" accept="image/*" capture="environment"><div class="preview"></div></div>
+</section>
+
+<section class="card"><h2>4. Afwijkingen / schade</h2>
+<label>Zijn er afwijkingen of beschadigingen? <span class="required">*</span></label>
+<div class="choice">
+<label><input type="radio" name="damage" value="Nee" required> Nee</label>
+<label><input type="radio" name="damage" value="Ja"> Ja</label></div>
+<div id="damageBox" class="hidden" style="margin-top:12px"><label>Omschrijving <span class="required">*</span></label>
+<textarea name="damage_description"></textarea></div></section>
+
+<section class="card"><h2>5. Afronding lossing</h2><div class="grid">
+<div><label>Lossing uitgevoerd door <span class="required">*</span></label><input name="worker" required></div>
+<div><label>Aantal geloste colli <span class="required">*</span></label><input name="unloaded" type="number" min="0" required></div>
+<div class="full"><label>Bijzonderheden</label><textarea name="notes"></textarea></div>
+</div></section>
+
+<section class="card"><div class="draftbar"><button type="button" class="save" id="save">OPSLAAN & LINK MAKEN</button><button type="button" class="secondary" id="copyLink">LINK KOPIËREN</button><button type="button" class="secondary" id="newForm">NIEUW FORMULIER</button></div><div class="draftinfo" id="draftInfo">Tip: klik op “OPSLAAN & LINK MAKEN” en stuur daarna de link naar jezelf of een collega.</div><button type="submit">LOSSING VERZENDEN</button><button type="button" class="secondary" id="reset">Formulier leegmaken</button><div id="status"></div></section>
+</form>
+</div>
+<script>
+const EMAIL='whops@podlogistics.nl';
+const DRAFT_PREFIX='pod_lossing_';
+const form=document.getElementById('form');
+const url=new URL(location.href);
+
+function makeId(){
+  return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2));
+}
+let formId=url.searchParams.get('form') || makeId();
+if(!url.searchParams.get('form')){
+  url.searchParams.set('form',formId);
+  history.replaceState({},'',url);
+}
+const draftKey=()=>DRAFT_PREFIX+formId;
+
+if(!document.getElementById('date').value)
+  document.getElementById('date').valueAsDate=new Date();
+
+function collectDraft(){
+  const data={};
+  form.querySelectorAll('input:not([type=file]),select,textarea').forEach(el=>{
+    if(el.type==='radio'||el.type==='checkbox'){
+      if(el.checked) data[el.name]=el.value;
+    } else {
+      data[el.name]=el.value;
+    }
+  });
+  return data;
+}
+
+function encodeData(data){
+  const bytes=new TextEncoder().encode(JSON.stringify(data));
+  let binary='';
+  bytes.forEach(b=>binary+=String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+function decodeData(str){
+  try{
+    const base64=str.replace(/-/g,'+').replace(/_/g,'/');
+    const padded=base64+'='.repeat((4-base64.length%4)%4);
+    const binary=atob(padded);
+    const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }catch(e){ return null; }
+}
+
+function setFormData(data){
+  Object.entries(data||{}).forEach(([k,v])=>{
+    const els=form.querySelectorAll(`[name="${CSS.escape(k)}"]`);
+    if(!els.length)return;
+    if(els[0].type==='radio'||els[0].type==='checkbox'){
+      els.forEach(el=>el.checked=el.value===v);
+      els.forEach(el=>el.dispatchEvent(new Event('change')));
+    } else {
+      els[0].value=v ?? '';
+    }
+  });
+}
+
+function updateShareUrl(){
+  const u=new URL(location.href);
+  u.searchParams.set('form',formId);
+  u.searchParams.set('data',encodeData(collectDraft()));
+  history.replaceState({},'',u);
+  return u.toString();
+}
+
+function saveDraft(showMessage=true){
+  const data=collectDraft();
+  localStorage.setItem(draftKey(),JSON.stringify({savedAt:new Date().toISOString(),data}));
+  const link=updateShareUrl();
+  const info=document.getElementById('draftInfo');
+  info.textContent='Opgeslagen. Gebruik "LINK KOPIËREN" om op een ander apparaat verder te gaan.';
+  if(showMessage){
+    const st=document.getElementById('status');
+    st.className='ok'; st.style.display='block';
+    st.textContent='Concept opgeslagen. De link bevat de ingevulde gegevens.';
+  }
+  return link;
+}
+
+function loadDraft(){
+  const dataParam=new URL(location.href).searchParams.get('data');
+  if(dataParam){
+    const data=decodeData(dataParam);
+    if(data){
+      setFormData(data);
+      document.getElementById('draftInfo').textContent='Opgeslagen concept geladen vanuit de link.';
+      localStorage.setItem(draftKey(),JSON.stringify({savedAt:new Date().toISOString(),data}));
+      return;
+    }
+  }
+
+  const raw=localStorage.getItem(draftKey());
+  if(!raw)return;
+  try{
+    const obj=JSON.parse(raw);
+    setFormData(obj.data||{});
+    if(obj.savedAt)
+      document.getElementById('draftInfo').textContent='Lokaal concept geladen • laatst opgeslagen '+new Date(obj.savedAt).toLocaleString('nl-NL');
+  }catch(e){}
+}
+
+async function copyShareLink(){
+  const link=saveDraft(false);
+  try{
+    await navigator.clipboard.writeText(link);
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=link; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+  }
+  const st=document.getElementById('status');
+  st.className='ok'; st.style.display='block';
+  st.textContent='Link gekopieerd. Stuur deze link bijvoorbeeld via WhatsApp of e-mail naar het andere apparaat.';
+}
+
+document.querySelectorAll('input[type=file]').forEach(inp=>inp.addEventListener('change',()=>{
+  const box=inp.parentElement.querySelector('.preview'); box.innerHTML='';
+  [...inp.files].forEach(f=>{
+    const img=document.createElement('img');
+    img.src=URL.createObjectURL(f);
+    box.appendChild(img);
+  });
+}));
+
+document.querySelectorAll('input[name=damage]').forEach(r=>r.addEventListener('change',()=>{
+  const yes=document.querySelector('input[name=damage]:checked')?.value==='Ja';
+  document.getElementById('damageBox').classList.toggle('hidden',!yes);
+  document.querySelector('[name=damage_description]').required=yes;
+}));
+
+loadDraft();
+
+document.getElementById('save').onclick=()=>saveDraft(true);
+document.getElementById('copyLink').onclick=copyShareLink;
+
+document.getElementById('newForm').onclick=()=>{
+  const u=new URL(location.href);
+  u.search='';
+  u.searchParams.set('form',makeId());
+  window.location.href=u.toString();
+};
+
+form.addEventListener('input',()=>saveDraft(false));
+form.addEventListener('change',()=>saveDraft(false));
+
+document.getElementById('reset').onclick=()=>{
+  if(confirm('Formulier leegmaken?')){
+    localStorage.removeItem(draftKey());
+    const u=new URL(location.href);
+    u.search='';
+    u.searchParams.set('form',formId);
+    location.href=u.toString();
+  }
+};
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!form.reportValidity())return;
+
+  const d=new FormData(form);
+  const order=d.get('order')||'';
+  const container=d.get('container')||'';
+
+  const body=[
+    'POD BV – LOSSING LOODS','',
+    'ORDER & DATUM',
+    'Ordernummer: '+(d.get('order')||''),
+    'Datum: '+(d.get('date')||''),
+    '',
+    '1. CONTAINERGEGEVENS',
+    'Containernummer: '+(d.get('container')||''),
+    'Sealnummer: '+(d.get('seal')||''),
+    'Goederen: '+(d.get('goods')||''),
+    'Gasmeting vereist: '+(d.get('gas')||''),
+    'Aantal colli: '+(d.get('colli')||''),
+    'Totaal gewicht: '+(d.get('weight')||'')+' kg',
+    '',
+    '2. KLANT & REFERENTIES',
+    'Klantnaam: '+(d.get('customer')||''),
+    'Klantreferentie: '+(d.get('reference')||''),
+    'Bestemming: '+(d.get('destination')||''),
+    '',
+    '3. FOTO’S BIJ LOSSING',
+    'Aantal geselecteerde foto’s: '+[...document.querySelectorAll('input[type=file]')].reduce((n,x)=>n+x.files.length,0),
+    'Let op: foto’s worden vanuit een gewone mailto-link niet automatisch als bijlage meegestuurd.',
+    '',
+    '4. AFWIJKINGEN / SCHADE',
+    'Afwijkingen/beschadigingen: '+(d.get('damage')||''),
+    'Omschrijving: '+(d.get('damage_description')||''),
+    '',
+    '5. AFRONDING LOSSING',
+    'Lossing uitgevoerd door: '+(d.get('worker')||''),
+    'Aantal geloste colli: '+(d.get('unloaded')||''),
+    'Bijzonderheden: '+(d.get('notes')||''),
+    '',
+    'Formulier-ID: '+formId
+  ].join('\n');
+
+  const subject=encodeURIComponent('LOSSING – Order '+order+' – Container '+container);
+  const mailto='mailto:'+EMAIL+'?subject='+subject+'&body='+encodeURIComponent(body);
+
+  // Save the latest version before opening the mail app.
+  saveDraft(false);
+  location.href=mailto;
+
+  const st=document.getElementById('status');
+  st.className='ok'; st.style.display='block';
+  st.textContent='E-mailconcept voor '+EMAIL+' wordt geopend.';
+});
+</script>
+</body></html>
